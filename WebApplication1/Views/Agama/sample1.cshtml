@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>JQUERY UI</h2>
+<label for="txtDate"> Pilih Tanggal</label>
+<input type="text" id="txtDate">
+<div class="ui-widget">
+    <label for="tags">Agama : </label>
+    <input id="txtAgama">
+</div>
+<div id="gridAgama"></div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#txtDate").datepicker();
+
+            var dataNama = [];
+            var url = "http://dev.smart-ics.com:212/myhospital/api/BilDsAgama/ListAll";
+            $.ajax({
+                type: "GET",
+                url: url,
+                datatype: "json",
+                success: function (data) {
+                    var newRow = "";
+                    $.each(data, function (key, value) {
+                        dataNama.push(value.Nama);
+                    });
+                },
+                error: function (error) {
+                    alert("Error : " + error);
+                }
+            });
+
+            $("#txtAgama").autocomplete({
+                source: dataNama
+            });
+        });
+    </script>
+
+}
